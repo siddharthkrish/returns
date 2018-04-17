@@ -4,10 +4,14 @@ mixin row(rowData)
     each item, index in rowData
         tr
             td
-                input(type='checkbox', name='#{item.id}')
+                a(href='/edit-order/' + item.id, role='button', class='btn btn-outline-primary')
+                    | Edit
+            td=moment(item.created_at).format('DD-MMM-YYYY')
             td=item.id
             td=item.billing_address.name
             td=item.email
+            td=item.total_price
+            td=item.financial_status
 
 block content
     table(class='table table-bordered table-striped')
