@@ -78,7 +78,9 @@ function accessToken(shop, code, res) {
         
         request.get(shopRequestUrl, { headers: shopRequestHeaders })
         .then((shopResponse) => {
-          res.end(shopResponse);
+          // res.end(shopResponse);
+          res.render('orders', { orderData: JSON.parse(shopResponse) })
+          // console.log(shopResponse);
         })
         .catch((error) => {
           res.status(error.statusCode).send(error.error.error_description);
