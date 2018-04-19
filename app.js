@@ -13,6 +13,7 @@ const nonce = require('nonce')();
 var index = require('./routes/index');
 var users = require('./routes/users');
 var shopify = require('./routes/shopify');
+var orders = require('./routes/orders');
 
 var app = express();
 
@@ -20,6 +21,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// ref: http://bit.ly/2JWhPwg
 app.locals.moment = require('moment');
 
 // uncomment after placing your favicon in /public
@@ -33,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/shopify', shopify);
+app.use('/orders', orders);
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery

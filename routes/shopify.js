@@ -70,21 +70,10 @@ function accessToken(shop, code, res) {
         };
 
     request.post(accessTokenRequestUrl, { json: accessTokenPayload }).then((accessTokenResponse) => {
-        const accessToken = accessTokenResponse.access_token;
-        const shopRequestUrl = 'https://' + shop + '/admin/orders.json';
-        const shopRequestHeaders = {
-          'X-Shopify-Access-Token': accessToken,
-        };
+        const redirectUrl = '/orders?token=' + accessTokenResponse.access_token + '&shop=' + shop;
         
-        request.get(shopRequestUrl, { headers: shopRequestHeaders })
-        .then((shopResponse) => {
-          // res.end(shopResponse);
-          res.render('orders', { orderData: JSON.parse(shopResponse) })
-          // console.log(shopResponse);
-        })
-        .catch((error) => {
-          res.status(error.statusCode).send(error.error.error_description);
-        });
+        res.redirect(307, redirectUri);
+        res.end();
     })
     .catch((error) => {
         res.status(error.statusCode).send(error.error.error_description);

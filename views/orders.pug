@@ -4,8 +4,8 @@ mixin row(rowData)
     each item, index in rowData
         tr
             td
-                a(href='/edit-order/' + item.id, role='button', class='btn btn-outline-primary')
-                    | Edit
+                a(href='/orders/' + item.id, role='button', class='btn btn-outline-primary')
+                    | Details
             td=moment(item.created_at).format('DD-MMM-YYYY')
             td=item.id
             td=item.billing_address.name
