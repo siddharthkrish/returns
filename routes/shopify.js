@@ -55,13 +55,13 @@ router.get('/callback', function(req, res, next) {
           return res.status(400).send('HMAC validation failed');
         }
         
-        accessToken(shop, code, res);
+        accessToken(shop, code, req, res);
     } else {
       res.status(400).send('Required parameters missing');
     }
 });
 
-function accessToken(shop, code, res) {
+function accessToken(shop, code, req, res) {
     const accessTokenRequestUrl = 'https://' + shop + '/admin/oauth/access_token';
     const accessTokenPayload = {
         client_id: apiKey,
@@ -71,13 +71,21 @@ function accessToken(shop, code, res) {
 
     request.post(accessTokenRequestUrl, { json: accessTokenPayload }).then((accessTokenResponse) => {
         const redirectUrl = '/orders?token=' + accessTokenResponse.access_token + '&shop=' + shop;
-        
-        res.redirect(307, redirectUri);
-        res.end();
+
+        storeInSession(req.session, accessTokenResponse.access_token, shop);
+        console.log('redirecting to: ' + redirectUrl);
+        res.redirect(307, redirectUrl);
     })
     .catch((error) => {
-        res.status(error.statusCode).send(error.error.error_description);
+        res.status(error.statusCode).send(error.error);
     });
+}
+
+function storeInSession(reqSession, accessToken, shop) {
+    console.log('storing session: token: ' + accessToken, ' for shop: ' + shop);
+    
+    reqSession.accessToken = accessToken;
+    reqSession.shop = shop;
 }
 
 module.exports = router;

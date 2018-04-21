@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 const crypto = require('crypto');
 const cookie = require('cookie');
@@ -23,6 +24,22 @@ app.set('view engine', 'pug');
 
 // ref: http://bit.ly/2JWhPwg
 app.locals.moment = require('moment');
+
+var sess = {
+  secret: 'shopify returns',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {maxAge:60000}
+}
+
+// secure the cookie in production
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1);
+  sess.cookie.secure = true;
+  console.log("in production, securing cookie");
+}
+
+app.use(session(sess));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
