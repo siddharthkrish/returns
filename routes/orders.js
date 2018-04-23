@@ -24,7 +24,10 @@ router.get("/:orderId(\\d+)", function(req, res, next) {
         console.log('details for OrderId: ' + req.params.orderId);
 
         makeShopifyCall(url, accessToken, res, function(shopResponse) {
-            res.status(200).json(JSON.parse(shopResponse));
+            res.render('order/view', {
+                orderData: JSON.parse(shopResponse)
+            });
+            // res.status(200).json(JSON.parse(shopResponse));
         });
     });
 });

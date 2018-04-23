@@ -1,0 +1,24 @@
+extends ../layout
+
+block breadcrumb
+  a(href="/orders") < orders
+
+block content
+  div(class='header') #{orderData.order.name}
+  div(class='order-details')
+    div(class='order-info')
+      div Date: #{moment(orderData.order.created_at).format('DD-MMM-YYYY')}
+      div Financial Status: #{orderData.order.financial_status}
+      div Fullfiled: #{orderData.order.fulfillment_status}
+    div(class='customer-info')
+      div #{orderData.order.customer.first_name} #{orderData.order.customer.last_name}
+      div #{orderData.order.shipping_address.address1}
+      div #{orderData.order.shipping_address.province}
+      div #{orderData.order.shipping_address.zip}
+
+    table(class='table table-hover')
+      each item in orderData.order.line_items
+        tr
+          td= item.name
+          td Rs. #{item.price} x #{item.quantity}
+          td= item.price * item.quantity

@@ -7,7 +7,7 @@ mixin row(rowData)
                 a(href='/orders/' + item.id, role='button', class='btn btn-outline-primary')
                     | Details
             td=moment(item.created_at).format('DD-MMM-YYYY')
-            td=item.id
+            td=item.name
             td=item.billing_address.name
             td=item.email
             td=item.total_price

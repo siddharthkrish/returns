@@ -6,3 +6,21 @@ body {
 a {
   color: #00B7FF;
 }
+
+.order-details {
+  padding: 1em;
+}
+
+.order-info {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.customer-info {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.order-details table {
+  width: 50%;
+}
