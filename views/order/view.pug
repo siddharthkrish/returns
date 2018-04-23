@@ -1,24 +1,41 @@
 extends ../layout
 
+mixin orderProducts(items)
+  table(class='table table-hover')
+    each item in items
+      tr
+        td= item.name
+        td Rs. #{item.price} x #{item.quantity}
+        td(class='pull-right') #{item.price * item.quantity}
+
+mixin customerDetails(order)
+  div(class='customer-info')
+    div #{order.customer.first_name} #{order.customer.last_name}
+    div #{order.shipping_address.address1}
+    div #{order.shipping_address.province}
+    div #{order.shipping_address.zip}
+
+mixin orderInfo(order)
+  div(class='order-info')
+    div Date: #{moment(order.created_at).format('DD-MMM-YYYY')}
+    div Financial Status: #{order.financial_status}
+    div Fullfiled: #{order.fulfillment_status}
+
+mixin totals(order)
+  div(class='order-totals')
+    div Subtotal: #{order.subtotal_price}
+    div GST: #{order.total_tax}
+    div Discount: #{order.total_discounts}
+    div Total: #{order.total_price}
+
 block breadcrumb
   a(href="/orders") < orders
 
 block content
-  div(class='header') #{orderData.order.name}
-  div(class='order-details')
-    div(class='order-info')
-      div Date: #{moment(orderData.order.created_at).format('DD-MMM-YYYY')}
-      div Financial Status: #{orderData.order.financial_status}
-      div Fullfiled: #{orderData.order.fulfillment_status}
-    div(class='customer-info')
-      div #{orderData.order.customer.first_name} #{orderData.order.customer.last_name}
-      div #{orderData.order.shipping_address.address1}
-      div #{orderData.order.shipping_address.province}
-      div #{orderData.order.shipping_address.zip}
-
-    table(class='table table-hover')
-      each item in orderData.order.line_items
-        tr
-          td= item.name
-          td Rs. #{item.price} x #{item.quantity}
-          td= item.price * item.quantity
+  div(class='container')
+    div(class='header') #{orderData.order.name}
+    div(class='order-details')
+      +orderInfo(orderData.order)
+      +customerDetails(orderData.order)
+      +orderProducts(orderData.order.line_items)
+      +totals(orderData.order)
