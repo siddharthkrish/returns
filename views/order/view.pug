@@ -1,12 +1,17 @@
 extends ../layout
 
 mixin orderProducts(items)
-  table(class='table table-hover')
+  table.table.table-hover
     each item in items
       tr
         td= item.name
-        td Rs. #{item.price} x #{item.quantity}
-        td(class='pull-right') #{item.price * item.quantity}
+        td Rs. #{item.price} x 
+          input(
+            type='text',
+            name=`${item.id}`,
+            value=`${item.quantity}`
+          )
+        td.pull-right #{item.price * item.quantity}
 
 mixin customerDetails(order)
   div(class='customer-info')
@@ -27,6 +32,19 @@ mixin totals(order)
     div GST: #{order.total_tax}
     div Discount: #{order.total_discounts}
     div Total: #{order.total_price}
+mixin actions(order)
+  .order-actions
+    button.btn.btn-outline-primary(type='button' data-toggle='modal' data-target='orderReturnsModal') Returns
+  #orderReturnsModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='orderReturnsModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-body
+          | ...
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+          button.btn.btn-primary(type='button') Save changes
+
+
 
 block breadcrumb
   a(href="/orders") < orders
@@ -39,3 +57,4 @@ block content
       +customerDetails(orderData.order)
       +orderProducts(orderData.order.line_items)
       +totals(orderData.order)
+      +actions(orderData.order)
